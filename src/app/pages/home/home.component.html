@@ -1,0 +1,113 @@
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast></p-toast>
+<div class="grid">
+  <div class="col px-4">
+    <p-card header="Contas">
+
+      <p-table  [value]="contas.lista" responsiveLayout="stack">
+        <ng-template pTemplate="caption">
+          <div class="flex align-items-center justify-content-between">
+            Contas
+            <button
+              pButton
+              icon="pi pi-plus"
+              class="p-button-secondary"
+              (click)="addConta()"
+              pTooltip="Adicionar"
+              tooltipPosition="top"
+            ></button>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 120px;">Status</th>
+            <th>Nome</th>
+            <th style="width: 300px;">Vencto</th>
+            <th style="width: 300px;">Valor</th>
+            <th style="width: 190px;">&nbsp;</th>
+          </tr>
+        </ng-template>
+        <ng-template let-conta pTemplate="body" let-i="rowIndex">
+          <tr>
+            <td>
+              <p-tag
+                [rounded]="false"
+                styleClass="mr-2"
+                [icon]="conta.pago === true ? 'pi pi-check' : 'pi pi-info-circle'"
+                [severity]="conta.statusPagamento"
+                [value]="conta.pago ? 'Pago' : 'A Pagar'"
+              ></p-tag>
+            </td>
+            <td>{{conta.nome | titlecase}}</td>
+            <td>{{conta.vencimento | date : 'dd/MM/yyyy'}}</td>
+            <td>{{conta.valor | currency : 'BRL':'R$'}}</td>
+            <td class="flex justify-content-end">
+              <span class="p-buttonset">
+                <button
+                  *ngIf="!conta.pago"
+                  icon="pi pi-check-circle"
+                  label=""
+                  class="p-button-success"
+                  (click)="pagarConta(conta)"
+                  pButton
+                  type="button"
+                  pTooltip="Pagar"
+                  tooltipPosition="top"
+                ></button>
+                <button
+                  icon="pi pi-pencil"
+                  label=""
+                  class="p-button-secondary"
+                  (click)="editarConta(conta)"
+                  pButton
+                  type="button"
+                  pTooltip="Editar"
+                  tooltipPosition="top"
+                ></button>
+                <button
+                  icon="pi pi-trash"
+                  label=""
+                  class="p-button-danger"
+                  (click)="removerConta(i)"
+                  pButton
+                  type="button"
+                  pTooltip="Excluir"
+                  tooltipPosition="top"
+                ></button>
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="grid">
+            <div class="col-12 md:col-6 lg:col-3">
+              Total de contas a pagar: {{contas?.lista ? contas.lista.length : 0 }}
+            </div>
+            <div class="col-12 md:col-6 lg:col-3">
+              Total de débitos do mês: {{contas.aPagar | currency : 'BRL':'R$'}}
+            </div>
+            <div class="col-12 md:col-6 lg:col-3">
+              Total pago: {{contas.pago | currency : 'BRL':'R$'}}
+            </div>
+            <div class="col-12 md:col-6 lg:col-3">
+              &nbsp;
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" class="text-center">
+              Nenhuma conta
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</div>
+
+<pre>
+  <code>
+    {{contas.lista|json}}
+  </code>
+</pre>

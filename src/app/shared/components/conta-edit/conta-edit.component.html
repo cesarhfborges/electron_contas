@@ -1,0 +1,64 @@
+<form [formGroup]="form" (submit)="submit()">
+  <div class="formgrid grid p-fluid">
+    <div class="field col-12">
+      <label for="inputNome" class="font-bold">Nome:</label>
+      <input #inputNome id="inputNome" class="w-full" pInputText type="text" formControlName="nome">
+    </div>
+
+    <div class="field col-12">
+      <label for="inputVencimento" class="font-bold">Data de vencimento:</label>
+      <p-calendar
+        id="inputVencimento"
+        formControlName="vencimento"
+        dateFormat="dd/mm/yy"
+        [showIcon]="false"
+        inputId="icon"
+        class="w-100"
+      ></p-calendar>
+    </div>
+
+    <div class="field col-12">
+      <label for="inputValor" class="font-bold">Valor:</label>
+      <p-inputNumber #inputValor id="inputValor" formControlName="valor" mode="currency" currency="BRL" locale="pt-BR" class="w-full"></p-inputNumber>
+    </div>
+
+    <div class="field col-12">
+      <p class="font-bold">Pago:</p>
+      <p-inputSwitch
+        id="inputPago"
+        [trueValue]="true"
+        [falseValue]="false"
+        formControlName="pago"
+        (onChange)="togglePayment($event)"
+      ></p-inputSwitch>
+    </div>
+
+    <div *ngIf="form.get('valorPagamento')" class="field col-12">
+      <label for="inputValorPagamento" class="font-bold">Valor pago:</label>
+      <div class="p-inputgroup">
+        <p-inputNumber id="inputValorPagamento" formControlName="valorPagamento" mode="currency" currency="BRL" locale="pt-BR" class="w-full"></p-inputNumber>
+        <button
+          type="button"
+          pButton
+          pRipple
+          icon="pi pi-check-square"
+          class="p-button-secondary"
+          pTooltip="Valor integral"
+          tooltipPosition="top"
+          (click)="integralValue()"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid flex align-items-center justify-content-between mt-5">
+    <button pButton type="button" (click)="cancelar()" label="Cancelar" class="p-button-danger col-4"></button>
+    <button pButton type="submit" label="Salvar" class="p-button-success col-4"></button>
+  </div>
+</form>
+
+<pre>
+  <code>
+    {{form.value|json}}
+  </code>
+</pre>
